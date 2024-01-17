@@ -1,0 +1,1 @@
+# Lesson4 - Massivning har bir elementini document-da ko'rsatish qilish
