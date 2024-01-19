@@ -1,2 +1,1 @@
-# React bo'yicha barcha dars kodlari
-## Ushbu sahifadan bo'sh react loyihasini yuklab olishingiz mumkin
+# lesson5 - react-da birinchi figma & component va props yordamida
