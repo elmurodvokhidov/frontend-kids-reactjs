@@ -1,0 +1,1 @@
+# Lesson6 - ma'lumotlarni render qilish, component-lar bilan ishlash. #takrorlash
