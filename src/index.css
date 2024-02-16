@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  transform: skew(45deg);
+  background: rgb(8 145 178);
+}
