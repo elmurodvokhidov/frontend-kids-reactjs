@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Context } from '../context/Context'
 
 const Home = () => {
-  const { store } = useContext(Context);
+  const { store, navigate, deleteItem, } = useContext(Context);
 
   return (
     <div className='w-full grid grid-cols-3 gap-8 py-6 px-8'>
@@ -21,8 +21,8 @@ const Home = () => {
             <p>{item.haqida}</p>
 
             <div className='flex justify-between'>
-              <button className='text-2xl text-green-500'>edit</button>
-              <button className='text-2xl text-red-500'>delete</button>
+              <button onClick={() => navigate(`/edit/${item.id}`)} className='text-2xl text-green-500'>edit</button>
+              <button onClick={() => deleteItem(item.id)} className='text-2xl text-red-500'>delete</button>
             </div>
           </div>
         ))
