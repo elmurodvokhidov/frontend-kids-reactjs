@@ -32,6 +32,7 @@ export default function ContextFunction({ children }) {
             haqida: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet exercitationem suscipit, soluta hic mollitia qui totam voluptatibus voluptates. Exercitationem unde magnam quisquam quam suscipit reiciendis facere recusandae? Corrupti, mollitia. Facilis?"
         },
     ]);
+    const [wishlistStore, setWishlistStore] = useState([]);
     const [yangiMahsulot, setYangiMahsulot] = useState({
         id: "",
         nom: "",
@@ -55,6 +56,10 @@ export default function ContextFunction({ children }) {
             ...yangiMahsulot,
             rasm: URL.createObjectURL(e.target.files[0])
         })
+    }
+
+    function likeFunction(x) {
+        setWishlistStore([...wishlistStore, x]);
     }
 
     const deleteItem = (id) => {
@@ -89,6 +94,9 @@ export default function ContextFunction({ children }) {
             inputdanQiymatOlish,
             inputdanRasmOlish,
             deleteItem,
+            wishlistStore,
+            setWishlistStore,
+            likeFunction,
         }}>
             {children}
         </Context.Provider>
