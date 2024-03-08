@@ -12,6 +12,7 @@ const EditOne = () => {
         inputdanQiymatOlish,
         inputdanRasmOlish,
         navigate,
+        storagedanQaytaMahsulotOlish,
     } = useContext(Context);
 
     const { id } = useParams();
@@ -23,7 +24,10 @@ const EditOne = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        setStore(store.map(mahsulot => mahsulot.id === id ? yangiMahsulot : mahsulot));
+        setStore(localStorage.setItem("store", JSON.stringify(
+            store.map(mahsulot => mahsulot.id === id ? yangiMahsulot : mahsulot)
+        )));
+        storagedanQaytaMahsulotOlish();
         navigate('/');
     }
 

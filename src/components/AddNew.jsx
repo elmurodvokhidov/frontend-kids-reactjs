@@ -12,11 +12,13 @@ const AddNew = () => {
     setYangiMahsulot,
     inputdanQiymatOlish,
     inputdanRasmOlish,
+    storagedanQaytaMahsulotOlish,
   } = useContext(Context);
 
   const handleSend = (e) => {
     e.preventDefault();
-    setStore([...store, { ...yangiMahsulot, id: uniqueID }]);
+    setStore(localStorage.setItem("store", JSON.stringify([...store, { ...yangiMahsulot, id: uniqueID }])));
+    storagedanQaytaMahsulotOlish();
     // store.push({ ...yangiMahsulot, id: generateNewId });
     navigate('/');
   }

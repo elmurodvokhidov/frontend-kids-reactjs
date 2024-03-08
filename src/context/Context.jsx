@@ -6,32 +6,7 @@ import getUID from "uid-generator-package";
 export const Context = createContext();
 
 export default function ContextFunction({ children }) {
-    const [store, setStore] = useState([
-        {
-            id: "NzA5OG12RzUyMTcx7098mvG52171",
-            nom: "Nike sumka",
-            rasm: "example",
-            // narx: 20,
-            // chegirma: 10,
-            haqida: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet exercitationem suscipit, soluta hic mollitia qui totam voluptatibus voluptates. Exercitationem unde magnam quisquam quam suscipit reiciendis facere recusandae? Corrupti, mollitia. Facilis?"
-        },
-        {
-            id: "MzA5NFRFbTM1Nzky3094TEm35792",
-            nom: "Nokia 1200",
-            rasm: "example",
-            // narx: 30,
-            // chegirma: 5,
-            haqida: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet exercitationem suscipit, soluta hic mollitia qui totam voluptatibus voluptates. Exercitationem unde magnam quisquam quam suscipit reiciendis facere recusandae? Corrupti, mollitia. Facilis?"
-        },
-        {
-            id: "NDY0NVJSRjIwMzAz4645RRF20303",
-            nom: "Kalonka jbl",
-            rasm: "example",
-            // narx: 10,
-            // chegirma: 8,
-            haqida: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet exercitationem suscipit, soluta hic mollitia qui totam voluptatibus voluptates. Exercitationem unde magnam quisquam quam suscipit reiciendis facere recusandae? Corrupti, mollitia. Facilis?"
-        },
-    ]);
+    const [store, setStore] = useState(JSON.parse(localStorage.getItem("store")) || []);
     const [wishlistStore, setWishlistStore] = useState([]);
     const [yangiMahsulot, setYangiMahsulot] = useState({
         id: "",
@@ -43,6 +18,9 @@ export default function ContextFunction({ children }) {
     const navigate = useNavigate();
     const uniqueID = getUID();
 
+    function storagedanQaytaMahsulotOlish() {
+        setStore(JSON.parse(localStorage.getItem("store")) || [])
+    }
 
     const inputdanQiymatOlish = (e) => {
         setYangiMahsulot({
@@ -73,7 +51,10 @@ export default function ContextFunction({ children }) {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                setStore(store.filter(mahsulot => mahsulot.id !== id));
+                setStore(localStorage.setItem("store", JSON.stringify(
+                    store.filter(mahsulot => mahsulot.id !== id)
+                )));
+                storagedanQaytaMahsulotOlish();
                 Swal.fire({
                     title: "Deleted!",
                     text: "Your file has been deleted.",
@@ -97,6 +78,7 @@ export default function ContextFunction({ children }) {
             wishlistStore,
             setWishlistStore,
             likeFunction,
+            storagedanQaytaMahsulotOlish,
         }}>
             {children}
         </Context.Provider>
