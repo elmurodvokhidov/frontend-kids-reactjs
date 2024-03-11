@@ -6,13 +6,12 @@ import { IoIosCloseCircle } from "react-icons/io";
 const EditOne = () => {
     const {
         store,
-        setStore,
         yangiMahsulot,
         setYangiMahsulot,
         inputdanQiymatOlish,
         inputdanRasmOlish,
         navigate,
-        storagedanQaytaMahsulotOlish,
+        mahsulotOlish,
     } = useContext(Context);
 
     const { id } = useParams();
@@ -24,10 +23,8 @@ const EditOne = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        setStore(localStorage.setItem("store", JSON.stringify(
-            store.map(mahsulot => mahsulot.id === id ? yangiMahsulot : mahsulot)
-        )));
-        storagedanQaytaMahsulotOlish();
+        fetch(`http://localhost:3000/store/${id}`, { method: "PUT", body: JSON.stringify(yangiMahsulot) });
+        mahsulotOlish();
         navigate('/');
     }
 

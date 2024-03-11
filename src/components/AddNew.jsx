@@ -1,24 +1,21 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Context } from '../context/Context';
 import { IoIosCloseCircle } from "react-icons/io";
 
 const AddNew = () => {
   const {
-    store,
-    setStore,
     navigate,
-    uniqueID,
     yangiMahsulot,
     setYangiMahsulot,
     inputdanQiymatOlish,
     inputdanRasmOlish,
-    storagedanQaytaMahsulotOlish,
+    mahsulotOlish,
   } = useContext(Context);
 
   const handleSend = (e) => {
     e.preventDefault();
-    setStore(localStorage.setItem("store", JSON.stringify([...store, { ...yangiMahsulot, id: uniqueID }])));
-    storagedanQaytaMahsulotOlish();
+    fetch("http://localhost:3000/store", { method: "POST", body: JSON.stringify(yangiMahsulot) });
+    mahsulotOlish();
     // store.push({ ...yangiMahsulot, id: generateNewId });
     navigate('/');
   }

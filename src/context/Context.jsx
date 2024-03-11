@@ -1,26 +1,32 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import getUID from "uid-generator-package";
 
 export const Context = createContext();
 
 export default function ContextFunction({ children }) {
-    const [store, setStore] = useState(JSON.parse(localStorage.getItem("store")) || []);
+    const [store, setStore] = useState([]);
     const [wishlistStore, setWishlistStore] = useState([]);
     const [yangiMahsulot, setYangiMahsulot] = useState({
-        id: "",
         nom: "",
         haqida: "",
         rasm: "",
     });
 
     const navigate = useNavigate();
-    const uniqueID = getUID();
 
-    function storagedanQaytaMahsulotOlish() {
-        setStore(JSON.parse(localStorage.getItem("store")) || [])
+    function mahsulotOlish() {
+        fetch("http://localhost:3000/store")
+            .then(res => res.json())
+            .then(data => setStore(data))
+            .catch(err => console.log(err))
     }
+
+    useEffect(() => {
+        mahsulotOlish();
+    }, []);
+
+    console.log(store);
 
     const inputdanQiymatOlish = (e) => {
         setYangiMahsulot({
@@ -51,10 +57,8 @@ export default function ContextFunction({ children }) {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                setStore(localStorage.setItem("store", JSON.stringify(
-                    store.filter(mahsulot => mahsulot.id !== id)
-                )));
-                storagedanQaytaMahsulotOlish();
+                fetch(`http://localhost:3000/store/${id}`, { method: "DELETE" });
+                mahsulotOlish();
                 Swal.fire({
                     title: "Deleted!",
                     text: "Your file has been deleted.",
@@ -69,7 +73,6 @@ export default function ContextFunction({ children }) {
             store,
             setStore,
             navigate,
-            uniqueID,
             yangiMahsulot,
             setYangiMahsulot,
             inputdanQiymatOlish,
@@ -78,7 +81,7 @@ export default function ContextFunction({ children }) {
             wishlistStore,
             setWishlistStore,
             likeFunction,
-            storagedanQaytaMahsulotOlish,
+            mahsulotOlish,
         }}>
             {children}
         </Context.Provider>
