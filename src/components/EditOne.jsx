@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom"
 import { Context } from "../context/Context";
 import { IoIosCloseCircle } from "react-icons/io";
+import { Toast } from "../assets/SweetAlert";
+import axios from "axios";
 
 const EditOne = () => {
     const {
@@ -12,6 +14,7 @@ const EditOne = () => {
         inputdanRasmOlish,
         navigate,
         mahsulotOlish,
+        setLoading,
     } = useContext(Context);
 
     const { id } = useParams();
@@ -21,11 +24,19 @@ const EditOne = () => {
         setYangiMahsulot(topilganMahsulot);
     }, [])
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        fetch(`http://localhost:3000/store/${id}`, { method: "PUT", body: JSON.stringify(yangiMahsulot) });
-        mahsulotOlish();
-        navigate('/');
+        try {
+            await axios.put(`http://localhost:5000/store/${id}`, yangiMahsulot);
+            mahsulotOlish();
+            setLoading(false);
+            navigate('/');
+        } catch (error) {
+            Toast.fire({
+                icon: "error",
+                title: error.message
+            });
+        }
     }
 
     return (

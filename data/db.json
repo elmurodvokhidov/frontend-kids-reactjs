@@ -1,16 +1,3 @@
 {
-  "store": [
-    {
-      "id": "MjY5ME1sQzExMzQ=2690MlC1134",
-      "nom": "eski",
-      "haqida": "eski",
-      "rasm": "blob:http://localhost:5173/036f1f10-e462-4aec-879d-1a7977a5e020"
-    },
-    {
-      "id": "515a",
-      "nom": "abc",
-      "haqida": "abc",
-      "rasm": "blob:http://localhost:5173/95bebc9a-e30a-4425-b3a2-b4e816179385"
-    }
-  ]
+  "store": []
 }

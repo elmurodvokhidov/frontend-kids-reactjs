@@ -1,11 +1,14 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Toast } from "../assets/SweetAlert";
 
 export const Context = createContext();
 
 export default function ContextFunction({ children }) {
     const [store, setStore] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [wishlistStore, setWishlistStore] = useState([]);
     const [yangiMahsulot, setYangiMahsulot] = useState({
         nom: "",
@@ -15,18 +18,22 @@ export default function ContextFunction({ children }) {
 
     const navigate = useNavigate();
 
-    function mahsulotOlish() {
-        fetch("http://localhost:3000/store")
-            .then(res => res.json())
-            .then(data => setStore(data))
-            .catch(err => console.log(err))
+    async function mahsulotOlish() {
+        try {
+            const { data } = await axios("http://localhost:5000/store");
+            setStore(data);
+            setLoading(false);
+        } catch (error) {
+            Toast.fire({
+                icon: "error",
+                title: error.message
+            });
+        }
     }
 
     useEffect(() => {
         mahsulotOlish();
     }, []);
-
-    console.log(store);
 
     const inputdanQiymatOlish = (e) => {
         setYangiMahsulot({
@@ -57,13 +64,14 @@ export default function ContextFunction({ children }) {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/store/${id}`, { method: "DELETE" });
-                mahsulotOlish();
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
+                axios.delete(`http://localhost:5000/store/${id}`).then(() => {
+                    mahsulotOlish();
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                })
             }
         });
     }
@@ -82,6 +90,8 @@ export default function ContextFunction({ children }) {
             setWishlistStore,
             likeFunction,
             mahsulotOlish,
+            loading,
+            setLoading,
         }}>
             {children}
         </Context.Provider>
