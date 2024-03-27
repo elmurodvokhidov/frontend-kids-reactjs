@@ -1,37 +1,27 @@
-import { useReducer, useState, useId } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createTodo,
+  deleteTodo,
+  updateTodo
+} from "./redux/slice/todoSlice";
 
 function App() {
-  // const initialState = {
-  //   todos: []
-  // };
-  const initialState = [];
+  const { todos } = useSelector(state => state.todo);
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     title: ""
   });
-
-  const id = useId() + new Date().getMilliseconds();
-
-  const [todos, dispatch] = useReducer(reducer, initialState);
-
-  function reducer(state, action) {
-    switch (action.type) {
-      case "CREATE": return [...state, { ...action.payload, id }];
-      case "UPDATE": return state = state.map(todo => todo.id === action.payload.id ? { ...todo, title: action.payload.title } : todo);
-      case "DELETE": return state.filter(todo => todo.id !== action.payload);
-
-      default: return state;
-    }
-  };
 
   const handleCreate = (e) => {
     e.preventDefault();
     if (input.title !== "") {
       if (input.id) {
         // ma'lumotni tahrirlash
-        dispatch({ type: "UPDATE", payload: input });
+        dispatch(updateTodo(input));
       } else {
         // yangi ma'lumot qo'shish
-        dispatch({ type: "CREATE", payload: input });
+        dispatch(createTodo(input));
       }
       setInput({ title: "" });
     }
@@ -45,8 +35,8 @@ function App() {
   };
 
   function deleteFunction(id) {
-    dispatch({ type: "DELETE", payload: id })
-  }
+    dispatch(deleteTodo(id));
+  };
 
   return (
     <div className="flex items-center justify-center bg-gray-100 h-screen">
